@@ -452,7 +452,7 @@ impala,"CHAR\n+","CHAR(1)\n"
 impala,"CHAR)","CHAR(1))"
 impala,"CONSTRAINT @a DEFAULT NOW()",""
 impala,stats,_stats
-impala,"CASE WHEN v1.concept_name IS NOT NULL\n\w+THEN CONCAT('Gender = ', v1.concept_name)\n\w+ELSE CONCAT('Gender = ', 'Unknown invalid concept')\n\w+END","CAST(CASE WHEN v1.concept_name IS NOT NULL\n THEN CONCAT('Gender = ', v1.concept_name)\n ELSE CONCAT('Gender = ', 'Unknown invalid concept')\n END AS VARCHAR(512))"
+impala,"CASE WHEN v1.concept_name IS NOT NULL\n\s+THEN CONCAT('Gender = ', v1.concept_name)\n\s+ELSE CONCAT('Gender = ', 'Unknown invalid concept')\n\s+END","CAST(CASE WHEN v1.concept_name IS NOT NULL\n THEN CONCAT('Gender = ', v1.concept_name)\n ELSE CONCAT('Gender = ', 'Unknown invalid concept')\n END AS VARCHAR(512))"
 netezza,"ROUND(@a,@b)","ROUND(CAST(@a AS NUMERIC),@b)"
 netezza,CAST(@a AS DATE),"TO_DATE(@a, 'yyyymmdd')"
 netezza,CAST(@a AS INT),CAST(@a AS INTEGER)
