@@ -484,6 +484,11 @@ test_that("translateSQL sql server -> Impala stats reserved word",{
     expect_equal_ignore_spaces(sql, "SELECT * FROM strata_stats AS _stats")
 })
 
+test_that("translateSQL sql server -> Impala cast as VARCHAR",{
+    sql <- translateSql("CASE WHEN v1.concept_name IS NOT NULL THEN CONCAT('Gender = ', v1.concept_name) ELSE CONCAT('Gender = ', 'Unknown invalid concept') END AS covariate_name", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "CONCAT(CAST('Gender = ' AS VARCHAR), coalesce(v1.concept_name, 'Unknown invalid concept')) AS covariate_name")
+})
+
 
 # Netezza tests
 
