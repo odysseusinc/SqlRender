@@ -382,7 +382,7 @@ test_that("translateSQL sql server -> Impala CAST(AS DATE)", {
 test_that("translateSQL sql server -> Impala DATEDIFF", {
   sql <- translateSql("SELECT DATEDIFF(dd,drug_era_start_date,drug_era_end_date) FROM drug_era;",
                       targetDialect = "impala")$sql
-  expect_equal_ignore_spaces(sql, "SELECT DATEDIFF(CASE TYPEOF(drug_era_end_date ) WHEN 'TIMESTAMP' THEN CAST(drug_era_end_date  AS TIMESTAMP) ELSE TO_UTC_TIMESTAMP(CONCAT_WS('-', SUBSTR(CAST(drug_era_end_date  AS STRING), 1, 4), SUBSTR(CAST(drug_era_end_date  AS STRING), 5, 2), SUBSTR(CAST(drug_era_end_date  AS STRING), 7, 2)), 'UTC') END, CASE TYPEOF(drug_era_start_date ) WHEN 'TIMESTAMP' THEN CAST(drug_era_start_date  AS TIMESTAMP) ELSE TO_UTC_TIMESTAMP(CONCAT_WS('-', SUBSTR(CAST(drug_era_start_date  AS STRING), 1, 4), SUBSTR(CAST(drug_era_start_date  AS STRING), 5, 2), SUBSTR(CAST(drug_era_start_date  AS STRING), 7, 2)), 'UTC') END) FROM drug_era;")
+  expect_equal_ignore_spaces(sql, "SELECT DATEDIFF(CAST(drug_era_end_date AS TIMESTAMP), CAST(drug_era_start_date AS TIMESTAMP)) FROM drug_era;")
 })
 
 test_that("translateSQL sql server -> Impala DATEADD", {
@@ -486,7 +486,25 @@ test_that("translateSQL sql server -> Impala stats reserved word",{
 
 test_that("translateSQL sql server -> Impala cast as VARCHAR",{
     sql <- translateSql("CASE WHEN v1.concept_name IS NOT NULL THEN CONCAT('Gender = ', v1.concept_name) ELSE CONCAT('Gender = ', 'Unknown invalid concept') END AS covariate_name", targetDialect = "impala")$sql
-    expect_equal_ignore_spaces(sql, "CAST(CONCAT(CAST('Gender = ' AS VARCHAR), coalesce(v1.concept_name, 'Unknown invalid concept')) AS VARCHAR(512) AS covariate_name")
+    expect_equal_ignore_spaces(sql, "CAST(CONCAT(CAST('Gender = ' AS VARCHAR), coalesce(v1.concept_name, 'Unknown invalid concept')) AS VARCHAR(512)) AS covariate_name")
+})
+
+test_that("translateSQL sql server -> Impala stratum",{
+    sql <- translateSql("select 1, 'gender_concept_id' as stratum_1", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "select 1,\n CAST('gender_concept_id' AS VARCHAR(255)) as stratum_1")
+    sql <- translateSql("select 1, p1.gender_concept_id as stratum_2", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "select 1,\n CAST(p1.gender_concept_id AS VARCHAR(255)) as stratum_2")
+    sql <- translateSql("select 1, p1.gender_concept_id as stratum_3", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "select 1,\n CAST(p1.gender_concept_id AS VARCHAR(255)) as stratum_3")
+    sql <- translateSql("select 1, p1.gender_concept_id as stratum_4", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "select 1,\n CAST(p1.gender_concept_id AS VARCHAR(255)) as stratum_4")
+    sql <- translateSql("select 1, p1.gender_concept_id as stratum_5", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "select 1,\n CAST(p1.gender_concept_id AS VARCHAR(255)) as stratum_5")
+})
+
+test_that("translateSQL sql server -> Impala CONCAT",{
+    sql <- translateSql("CONCAT('Condition occurrence :  ', CAST((p1.covariate_id-101)/1000 AS VARCHAR), '-', CASE WHEN c1.concept_name IS NOT NULL THEN c1.concept_name ELSE 'Unknown invalid concept' END) AS covariate_name", targetDialect = "impala")$sql
+    expect_equal_ignore_spaces(sql, "CAST(CONCAT('Condition occurrence :  ', CAST((p1.covariate_id-101)/1000 AS VARCHAR), '-', coalesce(c1.concept_name, 'Unknown invalid concept')) AS VARCHAR(512)) AS covariate_name")
 })
 
 
