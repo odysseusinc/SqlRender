@@ -1,6 +1,6 @@
 # @file PackageMaintenance
 #
-# Copyright 2018 Observational Health Data Sciences and Informatics
+# Copyright 2019 Observational Health Data Sciences and Informatics
 #
 # This file is part of SqlRender
 # 
@@ -34,6 +34,8 @@ rmarkdown::render("vignettes/UsingSqlRender.Rmd",
 pkgdown::build_site()
 
 # Release package:
-devtools::build_win()
+devtools::check_win_devel()
+
+devtools::check_rhub()
 
 devtools::release()

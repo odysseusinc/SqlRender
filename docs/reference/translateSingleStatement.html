@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Split a single SQL string into one or more SQL statements — splitSql • SqlRender</title>
+<title>Translates a single SQL statement from one dialect to another — translateSingleStatement • SqlRender</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Split a single SQL string into one or more SQL statements — splitSql" />
+<meta property="og:title" content="Translates a single SQL statement from one dialect to another — translateSingleStatement" />
 
-<meta property="og:description" content="splitSql splits a string containing multiple SQL statements into a vector of SQL statements" />
+<meta property="og:description" content="translateSingleStatement translates a single SQL statement from one dialect to another." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,40 +114,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Split a single SQL string into one or more SQL statements</h1>
+    <h1>Translates a single SQL statement from one dialect to another</h1>
     <small class="dont-index">Source: <a href='https://github.com/OHDSI/SqlRender/blob/master/R/RenderSql.R'><code>R/RenderSql.R</code></a></small>
-    <div class="hidden name"><code>splitSql.Rd</code></div>
+    <div class="hidden name"><code>translateSingleStatement.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>splitSql</code> splits a string containing multiple SQL statements into a vector of SQL statements</p>
+    <p><code>translateSingleStatement</code> translates a single SQL statement from one dialect to another.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>splitSql</span>(<span class='no'>sql</span>)</pre>
+    <pre class="usage"><span class='fu'>translateSingleStatement</span>(<span class='kw'>sql</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='no'>targetDialect</span>,
+  <span class='kw'>oracleTempSchema</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>sql</th>
-      <td><p>The SQL string to split into separate statements</p></td>
+      <td><p>The SQL to be translated</p></td>
+    </tr>
+    <tr>
+      <th>targetDialect</th>
+      <td><p>The target dialect. Currently "oracle", "postgresql", "pdw", "impala", "netezza", "bigquery", and
+"redshift" are supported</p></td>
+    </tr>
+    <tr>
+      <th>oracleTempSchema</th>
+      <td><p>A schema that can be used to create temp tables in when using Oracle or Impala.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of strings, one for each SQL statement</p>
+    <p>A character vector with the translated SQL.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is needed because some DBMSs (like ORACLE) do not accepts multiple SQL statements
-being sent as one execution.</p>
+    <p>This function takes SQL in one dialect and translates it into another. It uses simple pattern
+replacement, so its functionality is limited. This removes any trailing semicolon as required 
+by Oracle when sending through JDBC. An error is thrown if more than one statement is encountered 
+in the SQL.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>splitSql</span>(<span class='st'>"SELECT * INTO a FROM b; USE x; DROP TABLE c;"</span>)</div><div class='output co'>#&gt; [1] "SELECT * INTO a FROM b" "USE x"                  "DROP TABLE c"          </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>translateSingleStatement</span>(<span class='st'>"USE my_schema;"</span>, <span class='kw'>targetDialect</span> <span class='kw'>=</span> <span class='st'>"oracle"</span>)</div><div class='output co'>#&gt; [1] "ALTER SESSION SET current_schema = my_schema"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
