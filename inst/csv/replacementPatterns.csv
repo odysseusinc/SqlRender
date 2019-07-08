@@ -795,3 +795,7 @@ hive,"CONSTRAINT @a DEFAULT unix_timestamp()",""
 hive,"DEFAULT unix_timestamp()",""
 hive,stats,_stats
 hive,UPDATE STATISTICS @a;,-- hive does not support COMPUTE STATS
+hive,CAST(@a AS VARCHAR),CAST(@a AS VARCHAR(1000))
+hive,"ISNULL(@a,@b)","COALESCE(@a,@b)"
+hive,WITH @cte_name (@b) AS,WITH @cte_name AS
+hive,", @cte_name (@a) AS",", @cte_name AS"
