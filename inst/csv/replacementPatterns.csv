@@ -725,34 +725,34 @@ hive,"DATEADD(m,@months,CAST(@date AS DATE))","CAST(ADD_MONTHS(@date, @months) A
 hive,"DATEADD(year,@years,CAST(@date AS DATE))","CAST(ADD_MONTHS(@date, 12 * @years) AS TIMESTAMP)"
 hive,"DATEADD(yyyy,@years,CAST(@date AS DATE))","CAST(ADD_MONTHS(@date, 12 * @years) AS TIMESTAMP)"
 hive,"DATEADD(yy,@years,CAST(@date AS DATE))","CAST(ADD_MONTHS(@date, 12 * @years) AS TIMESTAMP)"
-hive,"DATEADD(d,@days,@date)","DATE_ADD(CAST(@date AS DATE), @days)"
-hive,"DATEADD(dd,@days,@date)","DATE_ADD(CAST(@date AS DATE), @days)"
-hive,"DATEADD(day,@days,@date)","DATE_ADD(CAST(@date AS DATE), @days)"
-hive,"DATEADD(month,@months,@date)","CAST(ADD_MONTHS(CAST(@date AS DATE), @months) AS TIMESTAMP)"
-hive,"DATEADD(mm,@months,@date)","CAST(ADD_MONTHS(CAST(@date AS DATE), @months) AS TIMESTAMP)"
-hive,"DATEADD(m,@months,@date)","CAST(ADD_MONTHS(CAST(@date AS DATE), @months) AS TIMESTAMP)"
-hive,"DATEADD(year,@years,@date)","CAST(ADD_MONTHS(CAST(@date AS DATE), 12 * @years) AS TIMESTAMP)"
-hive,"DATEADD(yyyy,@years,@date)","CAST(ADD_MONTHS(CAST(@date AS DATE), 12 * @years) AS TIMESTAMP)"
-hive,"DATEADD(yy,@years,@date)","CAST(ADD_MONTHS(CAST(@date AS DATE), 12 * @years) AS TIMESTAMP)"
-hive,"DATEDIFF(d,@start, @end)","DATEDIFF(CAST(@end AS DATE), CAST(@start AS DATE))"
-hive,"DATEDIFF(dd,@start, @end)","DATEDIFF(CAST(@end AS DATE), CAST(@start AS DATE))"
-hive,"DATEDIFF(day,@start, @end)","DATEDIFF(CAST(@end AS DATE), CAST(@start AS DATE))"
+hive,"DATEADD(d,@days,@date)","DATE_ADD(CAST(@date AS TIMESTAMP), @days)"
+hive,"DATEADD(dd,@days,@date)","DATE_ADD(CAST(@date AS TIMESTAMP), @days)"
+hive,"DATEADD(day,@days,@date)","DATE_ADD(CAST(@date AS TIMESTAMP), @days)"
+hive,"DATEADD(month,@months,@date)","CAST(ADD_MONTHS(CAST(@date AS TIMESTAMP), @months) AS TIMESTAMP)"
+hive,"DATEADD(mm,@months,@date)","CAST(ADD_MONTHS(CAST(@date AS TIMESTAMP), @months) AS TIMESTAMP)"
+hive,"DATEADD(m,@months,@date)","CAST(ADD_MONTHS(CAST(@date AS TIMESTAMP), @months) AS TIMESTAMP)"
+hive,"DATEADD(year,@years,@date)","CAST(ADD_MONTHS(CAST(@date AS TIMESTAMP), 12 * @years) AS TIMESTAMP)"
+hive,"DATEADD(yyyy,@years,@date)","CAST(ADD_MONTHS(CAST(@date AS TIMESTAMP), 12 * @years) AS TIMESTAMP)"
+hive,"DATEADD(yy,@years,@date)","CAST(ADD_MONTHS(CAST(@date AS TIMESTAMP), 12 * @years) AS TIMESTAMP)"
+hive,"DATEDIFF(d,@start, @end)","DATEDIFF(CAST(@end AS TIMESTAMP), CAST(@start AS TIMESTAMP))"
+hive,"DATEDIFF(dd,@start, @end)","DATEDIFF(CAST(@end AS TIMESTAMP), CAST(@start AS TIMESTAMP))"
+hive,"DATEDIFF(day,@start, @end)","DATEDIFF(CAST(@end AS TIMESTAMP), CAST(@start AS TIMESTAMP))"
 hive,"DATEFROMPARTS(@year,@month,@day)","CAST(unix_timestamp(CONCAT(CAST(@year AS STRING),'-',CAST(@month AS STRING),'-',CAST(@day AS STRING)), 'yyyy-M-d') AS TIMESTAMP)"
-hive,"eomonth(@date)","date_sub(CAST(add_months(trunc(CAST(@date AS TIMESTAMP), 'MM'),1) AS TIMESTAMP),1)"
-hive,DAY(@date),DAY(CAST(@date AS DATE))
+hive,"eomonth(@date)","CAST(last_day(@date) AS TIMESTAMP)"
 hive,GETDATE(), unix_timestamp()
-hive,MONTH(@date),MONTH(CAST(@date AS DATE))
-hive,YEAR(@date),YEAR(CAST(@date AS DATE))
 hive,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
 hive,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",DROP TABLE IF EXISTS @table;
 hive,(SELECT @a UNION SELECT @b) ORDER BY,SELECT * FROM\n(SELECT @a\nUNION\nSELECT @b)\nAS t1 ORDER BY
-hive,WITH @a AS @b SELECT @c INTO @d FROM @e;,CREATE TABLE @d\nAS\nWITH @a AS @b SELECT\n@c\nFROM\n@e;
+hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f) SELECT @i INTO @j FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nSELECT @i INTO @j FROM"
+hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f), @g AS (@h) SELECT @i INTO @j FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e; DROP TABLE IF EXISTS @g;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nCREATE TEMPORARY TABLE @g AS @h;\nSELECT @i INTO @j FROM"
+hive,WITH @a AS @c SELECT @d INTO @e FROM @f;,DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @e; CREATE TEMPORARY TABLE @a AS @c\n;\nCREATE TEMPORARY TABLE @e AS SELECT\n@d\nFROM\n@f\n;
+hive,"CREATE TEMPORARY TABLE @a AS (@b), @c (@d) as (@e)\n;","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; CREATE TEMPORARY TABLE @a AS (@b)\n;\nCREATE TEMPORARY TABLE @c AS (@e)\n;"
+hive,"CREATE TEMPORARY TABLE @a AS (@b), @c as (@d)\n;","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; CREATE TEMPORARY TABLE @a AS (@b)\n;\nCREATE TEMPORARY TABLE @c AS (@d)\n;"
+hive,DROP TABLE IF EXISTS @a (@b),DROP TABLE IF EXISTS @a
 hive,SELECT @a INTO @b FROM @c;,CREATE TABLE @b AS\nSELECT\n@a\nFROM\n@c;
 hive,SELECT @a INTO @b;,CREATE TABLE @b AS\nSELECT\n@a;
 hive,SELECT DISTINCT @a FROM @b INTERSECT SELECT DISTINCT @a FROM @c;,SELECT t1.@a FROM (SELECT DISTINCT @a FROM @b UNION ALL SELECT DISTINCT @a FROM @c) AS t1 GROUP BY @a HAVING COUNT(*) >= 2;
 hive,(SELECT DISTINCT @a FROM @b INTERSECT SELECT DISTINCT @a FROM @c),(SELECT t1.@a FROM (SELECT DISTINCT @a FROM @b UNION ALL SELECT DISTINCT @a FROM @c) AS t1 GROUP BY @a HAVING COUNT(*) >= 2)
-hive,DELETE FROM @a WHERE @b;,INSERT OVERWRITE TABLE @a SELECT * FROM @a WHERE NOT(@b);
-hive,DELETE FROM @a;,TRUNCATE TABLE @a;
 hive,.dbo.,.
 hive,##,<hash><hash>
 hive,#,%temp_prefix%%session_id%
@@ -769,9 +769,9 @@ hive,DECIMAL NOT NULL,DECIMAL
 hive,DOUBLE NOT NULL,DOUBLE
 hive,FLOAT NOT NULL,FLOAT
 hive,INT NOT NULL,INT
-hive,REAL NOT NULL,REAL
+hive,REAL NOT NULL,FLOAT
 hive,SMALLINT NOT NULL,SMALLINT
-hive,STRING NOT NULL,STRING
+hive,STRING NOT NULL,VARCHAR
 hive,TIMESTAMP NOT NULL,TIMESTAMP
 hive,TINYINT NOT NULL,TINYINT
 hive,VARCHAR(@a) NOT NULL,VARCHAR(@a)
@@ -782,9 +782,9 @@ hive,DECIMAL NULL,DECIMAL
 hive,DOUBLE NULL,DOUBLE
 hive,FLOAT NULL,FLOAT
 hive,INT NULL,INT
-hive,REAL NULL,REAL
+hive,REAL NULL,FLOAT
 hive,SMALLINT NULL,SMALLINT
-hive,STRING NULL,STRING
+hive,STRING NULL,VARCHAR
 hive,TIMESTAMP NULL,TIMESTAMP
 hive,TINYINT NULL,TINYINT
 hive,VARCHAR(@a) NULL,VARCHAR(@a)
@@ -797,5 +797,9 @@ hive,stats,_stats
 hive,UPDATE STATISTICS @a;,-- hive does not support COMPUTE STATS
 hive,CAST(@a AS VARCHAR),CAST(@a AS VARCHAR(1000))
 hive,"ISNULL(@a,@b)","COALESCE(@a,@b)"
-hive,WITH @cte_name (@b) AS,WITH @cte_name AS
-hive,", @cte_name (@a) AS",", @cte_name AS"
+hive,(@a)  AS select,(@a) AS select
+hive,"TABLE @cte_name (@a) AS (","TABLE @cte_name AS ("
+hive,"TABLE @cte_name (@a) AS select","TABLE @cte_name AS select"
+hive,"WHEN .@digits * ","WHEN 0.@digits * "
+hive,">= .@digits * ",">= 0.@digits * "
+hive, _stats, stats
