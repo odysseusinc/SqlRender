@@ -739,23 +739,28 @@ hive,"DATEDIFF(dd,@start, @end)","DATEDIFF(CAST(@end AS TIMESTAMP), CAST(@start 
 hive,"DATEDIFF(day,@start, @end)","DATEDIFF(CAST(@end AS TIMESTAMP), CAST(@start AS TIMESTAMP))"
 hive,"DATEFROMPARTS(@year,@month,@day)","CAST(unix_timestamp(CONCAT(CAST(@year AS STRING),'-',CAST(@month AS STRING),'-',CAST(@day AS STRING)), 'yyyy-M-d') AS TIMESTAMP)"
 hive,"eomonth(@date)","CAST(last_day(@date) AS TIMESTAMP)"
-hive,GETDATE(), unix_timestamp()
+hive,GETDATE(),unix_timestamp()
+hive,year(unix_timestamp()),year(from_unixtime(unix_timestamp()))
 hive,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
 hive,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",DROP TABLE IF EXISTS @table;
 hive,(SELECT @a UNION SELECT @b) ORDER BY,SELECT * FROM\n(SELECT @a\nUNION\nSELECT @b)\nAS t1 ORDER BY
 hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f) SELECT @i INTO @j FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nSELECT @i INTO @j FROM"
 hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f), @g AS (@h) SELECT @i INTO @j FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e; DROP TABLE IF EXISTS @g;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nCREATE TEMPORARY TABLE @g AS @h;\nSELECT @i INTO @j FROM"
-hive,WITH @a AS @c SELECT @d INTO @e FROM @f;,DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @e; CREATE TEMPORARY TABLE @a AS @c\n;\nCREATE TEMPORARY TABLE @e AS SELECT\n@d\nFROM\n@f\n;
+hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f), @g AS (@h), @i AS (@j) SELECT @k INTO @l FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e; DROP TABLE IF EXISTS @g; DROP TABLE IF EXISTS @i;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nCREATE TEMPORARY TABLE @g AS @h;\nCREATE TEMPORARY TABLE @i AS @j;\nSELECT @k INTO @l FROM"
+hive,WITH @a AS @b SELECT @c INTO @d FROM,DROP TABLE IF EXISTS @a;\n\nCREATE TEMPORARY TABLE @a AS @b;\nSELECT @c INTO @d FROM
 hive,"CREATE TEMPORARY TABLE @a AS (@b), @c (@d) as (@e)\n;","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; CREATE TEMPORARY TABLE @a AS (@b)\n;\nCREATE TEMPORARY TABLE @c AS (@e)\n;"
 hive,"CREATE TEMPORARY TABLE @a AS (@b), @c as (@d)\n;","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; CREATE TEMPORARY TABLE @a AS (@b)\n;\nCREATE TEMPORARY TABLE @c AS (@d)\n;"
 hive,DROP TABLE IF EXISTS @a (@b),DROP TABLE IF EXISTS @a
-hive,SELECT @a INTO @b FROM @c;,CREATE TABLE @b AS\nSELECT\n@a\nFROM\n@c;
-hive,SELECT @a INTO @b;,CREATE TABLE @b AS\nSELECT\n@a;
+hive,SELECT @a INTO @b FROM @c;,CREATE TABLE IF NOT EXISTS @b AS\nSELECT\n@a\nFROM\n@c;
+hive,SELECT @a INTO @b;,CREATE TABLE IF NOT EXISTS @b AS\nSELECT\n@a;
 hive,SELECT DISTINCT @a FROM @b INTERSECT SELECT DISTINCT @a FROM @c;,SELECT t1.@a FROM (SELECT DISTINCT @a FROM @b UNION ALL SELECT DISTINCT @a FROM @c) AS t1 GROUP BY @a HAVING COUNT(*) >= 2;
 hive,(SELECT DISTINCT @a FROM @b INTERSECT SELECT DISTINCT @a FROM @c),(SELECT t1.@a FROM (SELECT DISTINCT @a FROM @b UNION ALL SELECT DISTINCT @a FROM @c) AS t1 GROUP BY @a HAVING COUNT(*) >= 2)
 hive,.dbo.,.
 hive,##,<hash><hash>
 hive,#,%temp_prefix%%session_id%
+hive,#.@table (,@table (
+hive,#.@table;,@table;
+hive,#.@table),@table)
 hive,<hash><hash>,##
 hive,SELECT TOP @([0-9]+)rows @a;,SELECT @a LIMIT @rows;
 hive,(SELECT TOP @([0-9]+)rows @a),(SELECT @a LIMIT @rows)
