@@ -757,7 +757,7 @@ hive,SELECT DISTINCT @a FROM @b INTERSECT SELECT DISTINCT @a FROM @c;,SELECT t1.
 hive,(SELECT DISTINCT @a FROM @b INTERSECT SELECT DISTINCT @a FROM @c),(SELECT t1.@a FROM (SELECT DISTINCT @a FROM @b UNION ALL SELECT DISTINCT @a FROM @c) AS t1 GROUP BY @a HAVING COUNT(*) >= 2)
 hive,.dbo.,.
 hive,##,<hash><hash>
-hive,#,%temp_prefix%%session_id%
+hive,#,
 hive,#.@table (,@table (
 hive,#.@table;,@table;
 hive,#.@table),@table)
