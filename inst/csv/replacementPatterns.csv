@@ -743,6 +743,10 @@ hive,GETDATE(),unix_timestamp()
 hive,year(unix_timestamp()),year(from_unixtime(unix_timestamp()))
 hive,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
 hive,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",DROP TABLE IF EXISTS @table;
+hive,"HINT PARTITION(@p) @before CREATE TABLE IF NOT EXISTS @table(@pid,@fields) @after;",partitioned table \n@before CREATE TABLE IF NOT EXISTS @table (@fields) @after \n PARTITIONED BY(@p);
+hive,"HINT BUCKET(@bucket,@size) @before CREATE TABLE IF NOT EXISTS @table(@fields) @after;",table with bucket \n@before CREATE TABLE IF NOT EXISTS @table (@fields) @after \n CLUSTERED by (@bucket) into @size BUCKETS;
+hive,"HINT PARTITION(@p) @before CREATE TABLE @table(@pid,@fields) @after;",partitioned table \n@before CREATE TABLE @table (@fields) @after \n PARTITIONED BY(@p);
+hive,"HINT BUCKET(@bucket,@size) @before CREATE TABLE @table(@fields) @after;",table with bucket \n@before CREATE TABLE @table (@fields) @after \n CLUSTERED by (@bucket) into @size BUCKETS;
 hive,(SELECT @a UNION SELECT @b) ORDER BY,SELECT * FROM\n(SELECT @a\nUNION\nSELECT @b)\nAS t1 ORDER BY
 hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f) SELECT @i INTO #@j FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nCREATE TEMPORARY TABLE @j AS SELECT @i FROM"
 hive,"WITH @a AS (@b), @c AS (@d), @e AS (@f), @g AS (@h) SELECT @i INTO #@j FROM","DROP TABLE IF EXISTS @a; DROP TABLE IF EXISTS @c; DROP TABLE IF EXISTS @e; DROP TABLE IF EXISTS @g;\n\nCREATE TEMPORARY TABLE @a AS @b;\nCREATE TEMPORARY TABLE @c AS @d;\nCREATE TEMPORARY TABLE @e AS @f;\nCREATE TEMPORARY TABLE @g AS @h;\nCREATE TEMPORARY TABLE @j AS SELECT @i FROM"
@@ -815,3 +819,4 @@ hive,"TABLE @cte_name (@a) AS select","TABLE @cte_name AS select"
 hive,"WHEN .@digits * ","WHEN 0.@digits * "
 hive,">= .@digits * ",">= 0.@digits * "
 hive, _stats, stats
+hive,"ISNUMERIC(@a)","case when cast(@a as double) is not null then 1 else 0 end"
