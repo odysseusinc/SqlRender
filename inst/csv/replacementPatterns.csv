@@ -820,3 +820,4 @@ hive,"WHEN .@digits * ","WHEN 0.@digits * "
 hive,">= .@digits * ",">= 0.@digits * "
 hive, _stats, stats
 hive,"ISNUMERIC(@a)","case when cast(@a as double) is not null then 1 else 0 end"
+hive,as \"@a\",as @a
