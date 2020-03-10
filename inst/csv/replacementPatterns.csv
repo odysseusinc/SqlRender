@@ -554,7 +554,6 @@ netezza,CREATE INDEX @index_name ON @table (@variable);,-- netezza does not supp
 netezza,PRIMARY KEY NONCLUSTERED,PRIMARY KEY
 netezza,VARCHAR(MAX),VARCHAR(1000)
 netezza,FLOAT,"FLOAT(6)"
-netezza,FLOAT(@a)(@a),FLOAT(@a)
 netezza,#,
 netezza,"LEFT(@variable,@b)","SUBSTR(@variable, 1, @b)"
 netezza,"RIGHT(@variable,@b)","SUBSTR(@variable, LENGTH(@variable)-@b+1, @b)"
