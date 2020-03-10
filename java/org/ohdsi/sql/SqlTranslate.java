@@ -44,8 +44,6 @@ public class SqlTranslate {
 	private static String						BIG_QUERY						= "bigquery";
 	private static String 						IMPALA 							= "impala";
 	
-	private static final Logger logger = LoggerFactory.getLogger(SqlTranslate.class);
-
 	protected static class Block extends StringUtils.Token {
 		public boolean	isVariable;
 		public String	regEx;
@@ -402,7 +400,6 @@ public class SqlTranslate {
 	 * @return The translated SQL
 	 */
 	public static String translateSqlWithPath(String sql, String targetDialect, String sessionId, String oracleTempSchema, String pathToReplacementPatterns) {
-		logger.info("The following sql for translation is: " + sql);
 		ensurePatternsAreLoaded(pathToReplacementPatterns);
 		if (sessionId == null) {
 			if (globalSessionId == null)
@@ -436,7 +433,6 @@ public class SqlTranslate {
 		if (targetDialect.equalsIgnoreCase(IMPALA) || targetDialect.equalsIgnoreCase(BIG_QUERY)) {
 			sql = StringUtils.replaceWithConcat(sql);
 		}
-		logger.info("The following sql translated is: " + sql);
 		return sql;
 	}
 
