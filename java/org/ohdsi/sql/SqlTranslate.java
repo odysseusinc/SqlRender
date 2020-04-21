@@ -233,6 +233,7 @@ public class SqlTranslate {
 			String[] pair = replacementPatterns.get(i).clone();
 			pair[1] = pair[1].replace("%session_id%", sessionId);
 			pair[1] = pair[1].replace("%temp_prefix%", oracleTempPrefix);
+			pair[1] = pair[1].replace("%unique_prefix%", generateSessionId());
 			List<Block> parsedPattern = parseSearchPattern(pair[0]);
 			sql = searchAndReplace(sql, parsedPattern, pair[1]);
 		}

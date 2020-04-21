@@ -638,7 +638,7 @@ bigquery,DEFAULT @([0-9]+)a,""
 bigquery,DEFAULT \"@a\",""
 bigquery,"DEFAULT CURRENT_DATE()",""
 bigquery,TRUNCATE TABLE @a;,DELETE FROM @a WHERE True;
-bigquery,#,%temp_prefix%%session_id%
+bigquery,#,%temp_prefix%%unique_prefix%%session_id%
 bigquery,CREATE INDEX @index_name ON @table_col_cond;,-- bigquery does not support indexes
 bigquery,DROP INDEX @index_name;,-- bigquery does not support indexes
 bigquery,"DATEFROMPARTS(@year,@month,@day)","DATE(@year, @month, @day)"
