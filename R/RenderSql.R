@@ -127,6 +127,7 @@ renderSql <- function(sql = "", warnOnMissingParameters = TRUE, ...) {
 #' @export
 translate <- function(sql = "",
                       targetDialect,
+                      sessionId = NULL,
                       oracleTempSchema = NULL) {
   pathToReplacementPatterns <- system.file("csv", "replacementPatterns.csv", package = "SqlRender")
   if (missing(oracleTempSchema) || is.null(oracleTempSchema))
@@ -135,7 +136,8 @@ translate <- function(sql = "",
   for (message in messages) {
     warning(message)
   }
-  translatedSql <- rJava::J("org.ohdsi.sql.SqlTranslate")$translateSqlWithPath(sql, targetDialect, rJava::.jnull(), oracleTempSchema, pathToReplacementPatterns)
+
+  translatedSql <- rJava::J("org.ohdsi.sql.SqlTranslate")$translateSqlWithPath(sql, targetDialect, sessionId, oracleTempSchema, pathToReplacementPatterns)
   return(translatedSql)
 }
 
@@ -226,4 +228,9 @@ translateSingleStatement <- function(sql = "",
 #' @export
 splitSql <- function(sql) {
   rJava::J("org.ohdsi.sql.SqlSplit")$splitSql(sql)
+}
+
+
+generateSessionId <- function() {
+    translatedSql <- rJava::J("org.ohdsi.sql.SqlTranslate")$generateSessionId();
 }

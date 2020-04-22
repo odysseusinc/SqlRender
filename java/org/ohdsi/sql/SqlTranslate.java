@@ -380,7 +380,7 @@ public class SqlTranslate {
 			throw new RuntimeException("SQL contains more than one statement: " + sql);
 		return sqlStatements[0];
 	}
-	
+
 	/**
 	 * This function takes SQL in one dialect and translates it into another. It uses simple pattern replacement, so its functionality is limited.The source 
 	 * dialect is always SQL Server.
