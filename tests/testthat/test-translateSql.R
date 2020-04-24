@@ -2427,6 +2427,19 @@ test_that("translate SELECT INTO + CTE bigquery", {
   expect_equal_ignore_spaces(sql, "CREATE TABLE test AS WITH data as (select 1 as a, 2 as b union all select 3, 4) SELECT a,b FROM data;")
 })
 
+test_that("translate sql server -> BigQuery UPDATE STATISTICS", {
+    sql <- translate("UPDATE STATISTICS results_schema.heracles_results;",
+    targetDialect = "bigquery")
+    expect_equal_ignore_spaces(sql, "-- big query does not support such functionality")
+})
+
+test_that("translate sql server -> BigQuery modulus", {
+    sql <- translate("SELECT row_number() over (order by cast(person_id % 123 as int))", targetDialect = "bigquery")
+    expect_equal_ignore_spaces(sql, "select row_number() over (order by CAST(MOD(person_id, 123) AS INT64))")
+    sql <- translate("SELECT row_number() over (order by cast((person_id % 123) as int))", targetDialect = "bigquery")
+    expect_equal_ignore_spaces(sql, "select row_number() over (order by CAST(MOD(person_id, 123) AS INT64))")
+})
+
 # Hive tests
 
 test_that("translate sql server -> Hive clustered index is not supported", {
