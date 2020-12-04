@@ -834,3 +834,69 @@ hive,"ISNUMERIC(@a)","case when cast(@a as double) is not null then 1 else 0 end
 hive,as \"@a\",as @a
 hive,"HASHBYTES('MD5',@a)","hash(@a)"
 hive,"CONVERT(VARBINARY, @a, 1)","@a"
+teradata,"CONVERT(VARBINARY, @a, 1)","FROM_HEX(@a)"
+postgresql,"CONVERT(DATE, @a)","TO_DATE(@a, 'yyyymmdd')"
+teradata,"DATEADD(second,@seconds,@datetime)",(@datetime + INTERVAL '@seconds' second')
+teradata,"DATEADD(minute,@minutes,@datetime)",(@datetime + INTERVAL '@minutes' minute')
+teradata,"DATEADD(hour,@hours,@datetime)",(@datetime + INTERVAL '@hours' hour')
+teradata,"DATEADD(d,@days,@date)",(@date + INTERVAL '@days' day')
+teradata,"DATEADD(dd,@days,@date)",(@date + INTERVAL '@days' day')
+teradata,"DATEADD(day,@days,@date)",(@date + INTERVAL '@days' day')
+teradata,"DATEADD(m,@months,@date)",(@date + INTERVAL '@months' month')
+teradata,"DATEADD(mm,@months,@date)",(@date + INTERVAL '@months' month')
+teradata,"DATEADD(month,@months,@date)",(@date + INTERVAL '@months' month')
+teradata,"DATEADD(yy,@years,@date)",(@date + INTERVAL '@years' year')
+teradata,"DATEADD(yyyy,@years,@date)",(@date + INTERVAL '@years' year')
+teradata,"DATEADD(year,@years,@date)",(@date + INTERVAL '@years' year')
+teradata,"DATEDIFF(d,@start, @end)",(DATE'@end' - DATE'@start'))
+teradata,"DATEDIFF(dd,@start, @end)",(DATE'@end' - DATE'@start'))
+teradata,"DATEDIFF(day,@start, @end)",(DATE'@end' - DATE'@start'))
+teradata,"CONVERT(VARCHAR,@date,112)","TO_CHAR(@date, 'YYYYMMDD')"
+teradata,GETDATE(),CURRENT_DATE
+teradata,+ '@a',|| '@a'
+teradata,'@a' +,'@a' ||
+teradata,CAST(@a AS varchar(@b)) +,CAST(@a AS varchar(@b)) ||
+teradata,+ CAST(@a AS varchar(@b)),|| CAST(@a AS varchar(@b))
+teradata,CAST(@a AS varchar) +,CAST(@a AS varchar) ||
+teradata,+ CAST(@a AS varchar),|| CAST(@a AS varchar)
+teradata,"DATEFROMPARTS(@year,@month,@day)","TO_DATE(LPAD(@year,4,'0')||'-'||LPAD(@month,2,'0')||'-'||LPAD(@day,2,'0'), 'YYYY-MM-DD')"
+teradata,"DATETIMEFROMPARTS(@year,@month,@day,@hour,@minute,@second,@ms)","TO_DATE(LPAD(@year,4,'0')||'-'||LPAD(@month,2,'0')||'-'||LPAD(@day,2'0')||' '||LPAD(@hour,2,'0')||':'||LPAD(@minute,2,'0')||':'||LPAD(@second,2,'0'), 'YYYY-MM-DD HH24:MI:SS')"
+teradata,YEAR(@date),EXTRACT(YEAR FROM @date)
+teradata,MONTH(@date),EXTRACT(MONTH FROM @date)
+teradata,DAY(@date),EXTRACT(DAY FROM @date)
+teradata,EOMONTH(@date),LAST_DAY(@date)
+teradata,STDEV(@a),STDDEV_SAMP(@a)
+teradata,VAR(@a),VAR_SAMP(@a)
+teradata,RAND(),((CAST(RANDOM(-2147483648, 2147483647) AS FLOAT) + 2147483648) / 4294967295)
+teradata,LEN(@a),CHAR_LENGTH(@a)
+teradata,"CHARINDEX(@a,@b)","INSTR(@b,@a)"
+teradata,"LOG(@expression,@base)","(LN(CAST((@expression) AS FLOAT))/LN(CAST((@base) AS FLOAT)))"
+teradata,LOG(@expression),LN(CAST((@expression) AS FLOAT))
+teradata,LOG10(@expression),"LOG(CAST((@expression) AS FLOAT))"
+teradata,"ISNULL(@a,@b)","COALESCE(@a,@b)"
+teradata,"ISNUMERIC(@a)","CASE WHEN TO_NUMBER(@a) THEN 1 ELSE 0 END"
+teradata,COUNT_BIG(@a),COUNT(@a)
+teradata,SQUARE(@a),((@a)*(@a))
+teradata,USE @schema;,Database @schema;
+--postgresql,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
+--teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",BEGIN\n DECLARE exit HANDLER FOR SQLSTATE '42000' BEGIN END; \nEXECUTE IMMEDIATE 'DROP TABLE @table; \n END;';
+teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",--teradata does not support "DROP IF EXISTS" constructions
+teradata,.dbo.,.
+teradata,CREATE TABLE #@table (@definition),CREATE MULTISET VOLATILE TABLE @table NO LOG (@definition) ON COMMIT PRESERVE ROWS;
+teradata,CREATE CLUSTERED INDEX @index_name ON @table (@variable);,CREATE INDEX @index_name (@variable) ON @table;
+teradata,CREATE UNIQUE CLUSTERED INDEX @index_name ON @table (@variable);,CREATE INDEX @index_name (@variable) ON @table;
+teradata,PRIMARY KEY NONCLUSTERED,PRIMARY INDEX
+teradata,DATETIME,TIMESTAMP
+teradata,DATETIME2,TIMESTAMP
+teradata,VARCHAR(MAX),VARCHAR(MAX)
+--postgresql,FLOAT,NUMERIC
+teradata,WITH @a AS @b SELECT @c INTO #@d FROM @e;,WITH @a AS @b CREATE MULTISET VOLATILE TABLE @d AS @e WITH NO DATA; INSERT INTO @d SELECT @c FROM @e;
+teradata,WITH @a AS @b SELECT @c INTO @d FROM @e;WITH @a AS @b CREATE TABLE @d AS @e WITH NO DATA; INSERT INTO @d SELECT @c FROM @e;
+teradata,SELECT @a INTO #@b FROM @c;,CREATE MULTISET VOLATILE TABLE @b AS (SELECT @a FROM @c) WITH DATA ON COMMIT PRESERVE ROWS;
+teradata,SELECT @a INTO @b FROM @c;,CREATE TABLE @b AS @c WITH NO DATA; INSERT INTO @b SELECT @a FROM @c;
+teradata,SELECT @a INTO @b;,CREATE TABLE @b AS @c WITH NO DATA;
+teradata,#,
+teradata,SELECT TOP @([0-9]+)rows @a;,SELECT @a SAMPLE @rows;
+teradata,(SELECT TOP @([0-9]+)rows @a),(SELECT @a SAMPLE @rows)
+--postgresql,"WITH @cte AS (SELECT @s1 '@literal' @s2)","WITH @cte AS (SELECT @s1 CAST('@literal' as TEXT) @s2)"
+--postgresql,UPDATE STATISTICS @a;,ANALYZE @a;
