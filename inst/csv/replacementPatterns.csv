@@ -394,14 +394,14 @@ pdw,CREATE TABLE #@table (@definition) WITH (DISTRIBUTION = @distribution);,"CRE
 pdw,[ person_id ],[person_id]
 pdw,[ subject_id ],[subject_id]
 pdw,[ analysis_id ],[analysis_id]
-pdw,TRUNCATE TABLE ,IF XACT_STATE() = 1 COMMIT; TR*NC*T* TABLE 
-pdw,DROP TABLE ,IF XACT_STATE() = 1 COMMIT; DR*P TABLE 
-pdw,CREATE TABLE ,IF XACT_STATE() = 1 COMMIT; CR**T* TABLE 
+pdw,TRUNCATE TABLE ,IF XACT_STATE() = 1 COMMIT; TR*NC*T* TABLE
+pdw,DROP TABLE ,IF XACT_STATE() = 1 COMMIT; DR*P TABLE
+pdw,CREATE TABLE ,IF XACT_STATE() = 1 COMMIT; CR**T* TABLE
 pdw,TR*NC*T*,TRUNCATE
 pdw,DR*P,DROP
 pdw,CR**T*,CREATE
-pdw,IF OBJECT_ID(@a) IS NOT NULL IF XACT_STATE() = 1 COMMIT;,IF XACT_STATE() = 1 COMMIT; IF OBJECT_ID(@a) IS NOT NULL 
-pdw,IF OBJECT_ID(@a) IS NULL IF XACT_STATE() = 1 COMMIT;,IF XACT_STATE() = 1 COMMIT; IF OBJECT_ID(@a) IS NULL 
+pdw,IF OBJECT_ID(@a) IS NOT NULL IF XACT_STATE() = 1 COMMIT;,IF XACT_STATE() = 1 COMMIT; IF OBJECT_ID(@a) IS NOT NULL
+pdw,IF OBJECT_ID(@a) IS NULL IF XACT_STATE() = 1 COMMIT;,IF XACT_STATE() = 1 COMMIT; IF OBJECT_ID(@a) IS NULL
 pdw,"CONSTRAINT @a DEFAULT GETDATE()",""
 pdw,"DEFAULT GETDATE()",""
 pdw,CREATE INDEX @index_name ON @table (@variable) WHERE @b;,CREATE INDEX @index_name ON @table (@variable);
@@ -839,15 +839,15 @@ postgresql,"CONVERT(DATE, @a)","TO_DATE(@a, 'yyyymmdd')"
 teradata,"DATEADD(second,@seconds,@datetime)",(@datetime + INTERVAL '@seconds' second')
 teradata,"DATEADD(minute,@minutes,@datetime)",(@datetime + INTERVAL '@minutes' minute')
 teradata,"DATEADD(hour,@hours,@datetime)",(@datetime + INTERVAL '@hours' hour')
-teradata,"DATEADD(d,@days,@date)",(@date + INTERVAL '@days' day')
-teradata,"DATEADD(dd,@days,@date)",(@date + INTERVAL '@days' day')
-teradata,"DATEADD(day,@days,@date)",(@date + INTERVAL '@days' day')
-teradata,"DATEADD(m,@months,@date)",(@date + INTERVAL '@months' month')
-teradata,"DATEADD(mm,@months,@date)",(@date + INTERVAL '@months' month')
-teradata,"DATEADD(month,@months,@date)",(@date + INTERVAL '@months' month')
-teradata,"DATEADD(yy,@years,@date)",(@date + INTERVAL '@years' year')
-teradata,"DATEADD(yyyy,@years,@date)",(@date + INTERVAL '@years' year')
-teradata,"DATEADD(year,@years,@date)",(@date + INTERVAL '@years' year')
+teradata,"DATEADD(d,@days,@date)",(@date + INTERVAL '@days' DAY)
+teradata,"DATEADD(dd,@days,@date)",(@date + INTERVAL '@days' DAY)
+teradata,"DATEADD(day,@days,@date)",(@date + INTERVAL '@days' DAY)
+teradata,"DATEADD(m,@months,@date)",(@date + INTERVAL '@months' MONTH)
+teradata,"DATEADD(mm,@months,@date)",(@date + INTERVAL '@months' MONTH)
+teradata,"DATEADD(month,@months,@date)",(@date + INTERVAL '@months' MONTH)
+teradata,"DATEADD(yy,@years,@date)",(@date + INTERVAL '@years' YEAR)
+teradata,"DATEADD(yyyy,@years,@date)",(@date + INTERVAL '@years' YEAR)
+teradata,"DATEADD(year,@years,@date)",(@date + INTERVAL '@years' YEAR)
 teradata,"DATEDIFF(d,@start, @end)",(DATE'@end' - DATE'@start'))
 teradata,"DATEDIFF(dd,@start, @end)",(DATE'@end' - DATE'@start'))
 teradata,"DATEDIFF(day,@start, @end)",(DATE'@end' - DATE'@start'))
@@ -874,7 +874,9 @@ teradata,"LOG(@expression,@base)","(LN(CAST((@expression) AS FLOAT))/LN(CAST((@b
 teradata,LOG(@expression),LN(CAST((@expression) AS FLOAT))
 teradata,LOG10(@expression),"LOG(CAST((@expression) AS FLOAT))"
 teradata,"ISNULL(@a,@b)","COALESCE(@a,@b)"
-teradata,"ISNUMERIC(@a)","CASE WHEN TO_NUMBER(@a) THEN 1 ELSE 0 END"
+teradata,"ISNUMERIC(abs(@a))","CASE WHEN tryCast(CAST(@a AS CHAR(1000)) AS INT) is not null THEN 1 ELSE 0 END"
+teradata,"ISNUMERIC(@a)","CASE WHEN TryCast(@a) THEN 1 ELSE 0 END"
+teradata,!=, <>
 teradata,COUNT_BIG(@a),COUNT(@a)
 teradata,SQUARE(@a),((@a)*(@a))
 teradata,USE @schema;,Database @schema;
