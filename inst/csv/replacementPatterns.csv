@@ -854,10 +854,11 @@ teradata,"CONVERT(VARCHAR,@date,112)","TO_CHAR(@date, 'YYYYMMDD')"
 teradata,GETDATE(),CURRENT_DATE
 teradata,+ '@a',|| '@a'
 teradata,'@a' +,'@a' ||
+teradata,CAST(@a AS VARCHAR), CAST(@a AS VARCHAR(255))
 teradata,CAST(@a AS varchar(@b)) +,CAST(@a AS varchar(@b)) ||
 teradata,+ CAST(@a AS varchar(@b)),|| CAST(@a AS varchar(@b))
-teradata,CAST(@a AS varchar) +,CAST(@a AS varchar) ||
-teradata,+ CAST(@a AS varchar),|| CAST(@a AS varchar)
+teradata,CAST(@a AS varchar) +,CAST(@a AS varchar(255)) ||
+teradata,+ CAST(@a AS varchar),|| CAST(@a AS varchar(255))
 teradata,"DATEFROMPARTS(@year,@month,@day)","TO_DATE(LPAD(@year,4,'0')||'-'||LPAD(@month,2,'0')||'-'||LPAD(@day,2,'0'), 'YYYY-MM-DD')"
 teradata,"DATETIMEFROMPARTS(@year,@month,@day,@hour,@minute,@second,@ms)","TO_DATE(LPAD(@year,4,'0')||'-'||LPAD(@month,2,'0')||'-'||LPAD(@day,2'0')||' '||LPAD(@hour,2,'0')||':'||LPAD(@minute,2,'0')||':'||LPAD(@second,2,'0'), 'YYYY-MM-DD HH24:MI:SS')"
 teradata,YEAR(@date),EXTRACT(YEAR FROM @date)
@@ -902,6 +903,7 @@ teradata,"ISNUMERIC(@a)","CASE WHEN TryCast(@a) THEN 1 ELSE 0 END"
 teradata,!=, <>
 teradata,!=, <>
 teradata,.DOMAIN, ."DOMAIN"
+teradata," domain"," \"domain\""
 teradata,"'1850-01-01'","CAST('01-01-1850' AS TIMESTAMP(0) FORMAT 'DD-MM-Y4')"
 teradata,"'1950-01-01'","CAST('01-01-1950' AS TIMESTAMP(0) FORMAT 'DD-MM-Y4')"
 teradata,"error","\"error\""
