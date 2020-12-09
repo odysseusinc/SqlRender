@@ -835,7 +835,6 @@ hive,as \"@a\",as @a
 hive,"HASHBYTES('MD5',@a)","hash(@a)"
 hive,"CONVERT(VARBINARY, @a, 1)","@a"
 teradata,"CONVERT(VARBINARY, @a, 1)","FROM_HEX(@a)"
-postgresql,"CONVERT(DATE, @a)","TO_DATE(@a, 'yyyymmdd')"
 teradata,"DATEADD(second,@seconds,@datetime)",(@datetime + INTERVAL '@seconds' second')
 teradata,"DATEADD(minute,@minutes,@datetime)",(@datetime + INTERVAL '@minutes' minute')
 teradata,"DATEADD(hour,@hours,@datetime)",(@datetime + INTERVAL '@hours' hour')
@@ -874,9 +873,6 @@ teradata,"LOG(@expression,@base)","(LN(CAST((@expression) AS FLOAT))/LN(CAST((@b
 teradata,LOG(@expression),LN(CAST((@expression) AS FLOAT))
 teradata,LOG10(@expression),"LOG(CAST((@expression) AS FLOAT))"
 teradata,"ISNULL(@a,@b)","COALESCE(@a,@b)"
-teradata,"ISNUMERIC(abs(@a))","CASE WHEN tryCast(CAST(@a AS CHAR(1000)) AS INT) is not null THEN 1 ELSE 0 END"
-teradata,"ISNUMERIC(@a)","CASE WHEN TryCast(@a) THEN 1 ELSE 0 END"
-teradata,!=, <>
 teradata,COUNT_BIG(@a),COUNT(@a)
 teradata,SQUARE(@a),((@a)*(@a))
 teradata,USE @schema;,Database @schema;
@@ -893,12 +889,21 @@ teradata,DATETIME2,TIMESTAMP
 teradata,VARCHAR(MAX),VARCHAR(MAX)
 --postgresql,FLOAT,NUMERIC
 teradata,WITH @a AS @b SELECT @c INTO #@d FROM @e;,WITH @a AS @b CREATE MULTISET VOLATILE TABLE @d AS @e WITH NO DATA; INSERT INTO @d SELECT @c FROM @e;
-teradata,WITH @a AS @b SELECT @c INTO @d FROM @e;WITH @a AS @b CREATE TABLE @d AS @e WITH NO DATA; INSERT INTO @d SELECT @c FROM @e;
+teradata,WITH @a AS @b SELECT @c INTO @d FROM @e;,WITH @a AS @b CREATE TABLE @d AS @e WITH NO DATA; INSERT INTO @d SELECT @c FROM @e;
 teradata,SELECT @a INTO #@b FROM @c;,CREATE MULTISET VOLATILE TABLE @b AS (SELECT @a FROM @c) WITH DATA ON COMMIT PRESERVE ROWS;
 teradata,SELECT @a INTO @b FROM @c;,CREATE TABLE @b AS @c WITH NO DATA; INSERT INTO @b SELECT @a FROM @c;
 teradata,SELECT @a INTO @b;,CREATE TABLE @b AS @c WITH NO DATA;
 teradata,#,
 teradata,SELECT TOP @([0-9]+)rows @a;,SELECT @a SAMPLE @rows;
 teradata,(SELECT TOP @([0-9]+)rows @a),(SELECT @a SAMPLE @rows)
---postgresql,"WITH @cte AS (SELECT @s1 '@literal' @s2)","WITH @cte AS (SELECT @s1 CAST('@literal' as TEXT) @s2)"
---postgresql,UPDATE STATISTICS @a;,ANALYZE @a;
+--teradata,hacks,begin
+teradata,"ISNUMERIC(abs(@a))","CASE WHEN tryCast(CAST(@a AS CHAR(1000)) AS INT) is not null THEN 1 ELSE 0 END"
+teradata,"ISNUMERIC(@a)","CASE WHEN TryCast(@a) THEN 1 ELSE 0 END"
+teradata,!=, <>
+teradata,!=, <>
+teradata,.DOMAIN, ."DOMAIN"
+teradata,"'1850-01-01'","CAST('01-01-1850' AS TIMESTAMP(0) FORMAT 'DD-MM-Y4')"
+teradata,"'1950-01-01'","CAST('01-01-1950' AS TIMESTAMP(0) FORMAT 'DD-MM-Y4')"
+teradata,"error","\"error\""
+teradata,"ERROR","\"ERROR\""
+--teradata,hacks,end
