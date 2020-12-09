@@ -903,7 +903,7 @@ teradata,"ISNUMERIC(@a)","CASE WHEN TryCast(@a) THEN 1 ELSE 0 END"
 teradata,!=, <>
 teradata,!=, <>
 teradata,.DOMAIN, ."DOMAIN"
-teradata," domain"," \"domain\""
+teradata,"domain","\"domain\""
 teradata,"'1850-01-01'","CAST('01-01-1850' AS TIMESTAMP(0) FORMAT 'DD-MM-Y4')"
 teradata,"'1950-01-01'","CAST('01-01-1950' AS TIMESTAMP(0) FORMAT 'DD-MM-Y4')"
 teradata,"error","\"error\""
