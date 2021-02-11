@@ -874,7 +874,7 @@ teradata,"LOG(@expression,@base)","(LN(CAST((@expression) AS FLOAT))/LN(CAST((@b
 teradata,LOG(@expression),LN(CAST((@expression) AS FLOAT))
 teradata,LOG10(@expression),"LOG(CAST((@expression) AS FLOAT))"
 teradata,"ISNULL(@a,@b)","COALESCE(@a,@b)"
-teradata,COUNT_BIG(@a),COUNT(@a)
+teradata,COUNT_BIG(@a),CAST(COUNT(@a) AS BIGINT)
 teradata,SQUARE(@a),((@a)*(@a))
 teradata,USE @schema;,Database @schema;
 --postgresql,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
