@@ -11,4 +11,3 @@ standalone/build/*
 /target
 .idea
 *.iml
-errorReportSql.txt

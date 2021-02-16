@@ -253,18 +253,12 @@ public class BigQueryTranslate {
 					.replace("@@a", cte_match.variableToValue.get("@@a"))
 					.replace("(@@b)", "")
 					.replace("@@c", replacement_select_list)
-					.replace("@@d", nullToEmptyString(cte_match.variableToValue.get("@@d")))
+					.replace("@@d", cte_match.variableToValue.get("@@d"))
 				+ sql.substring(cte_match.end);
 		}
 		return sql;
 	}
 
-	private static String nullToEmptyString(String string) {
-	  if (string == null)
-		  return "";
-	  else
-		  return string;				  
-	}
 	/**
 	 * Finds complex expressions in a GROUP BY or ORDER BY list and replaces them with references to matching select list expressions.
 	 *
@@ -366,7 +360,6 @@ public class BigQueryTranslate {
 		sql = bigQueryLowerCase(sql);
 		sql = bigQueryAliasCommonTableExpressions(sql, "with @@a (@@b) as (select @@c from @@d)");
 		sql = bigQueryAliasCommonTableExpressions(sql, "with @@a (@@b) as (select @@c union @@d)");
-		sql = bigQueryAliasCommonTableExpressions(sql, "with @@a (@@b) as (select @@c)");
 		sql = bigQueryAliasCommonTableExpressions(sql, ", @@a (@@b) as (select @@c from @@d)");
 
 		String groupByReferences = "select @@s from @@b group by @@r";
