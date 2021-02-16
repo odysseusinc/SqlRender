@@ -18,7 +18,6 @@
 "_PACKAGE"
 
 #' @importFrom utils install.packages menu
-#' @importFrom rlang abort warn inform
 NULL
 
 .onLoad <- function(libname, pkgname) {
