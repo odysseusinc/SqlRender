@@ -881,7 +881,7 @@ teradata,USE @schema;,Database @schema;
 --teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",BEGIN\n DECLARE exit HANDLER FOR SQLSTATE '42000' BEGIN END; \nEXECUTE IMMEDIATE 'DROP TABLE @table; \n END;';
 teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",--teradata does not support "DROP IF EXISTS" constructions
 teradata,.dbo.,.
-teradata,CREATE TABLE #@table (@definition),CREATE MULTISET VOLATILE TABLE @table NO LOG (@definition) ON COMMIT PRESERVE ROWS;
+teradata,CREATE TABLE #@table (@definition),CREATE MULTISET VOLATILE TABLE @table (@definition) ON COMMIT PRESERVE ROWS;
 teradata,CREATE CLUSTERED INDEX @index_name ON @table (@variable);,CREATE INDEX @index_name (@variable) ON @table;
 teradata,CREATE UNIQUE CLUSTERED INDEX @index_name ON @table (@variable);,CREATE INDEX @index_name (@variable) ON @table;
 teradata,PRIMARY KEY NONCLUSTERED,PRIMARY INDEX
