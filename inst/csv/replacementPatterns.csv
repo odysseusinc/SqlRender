@@ -877,9 +877,13 @@ teradata,"ISNULL(@a,@b)","COALESCE(@a,@b)"
 teradata,COUNT_BIG(@a),CAST(COUNT(@a) AS BIGINT)
 teradata,SQUARE(@a),((@a)*(@a))
 teradata,USE @schema;,Database @schema;
---postgresql,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
 --teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",BEGIN\n DECLARE exit HANDLER FOR SQLSTATE '42000' BEGIN END; \nEXECUTE IMMEDIATE 'DROP TABLE @table; \n END;';
-teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",--teradata does not support "DROP IF EXISTS" constructions
+--teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",--teradata does not support "DROP IF EXISTS" constructions
+--teradata. workaround to process IF EXIST queries. BEGIN
+teradata,"IF OBJECT_ID('@table', 'U') IS NULL CREATE TABLE @table (@definition);",CREATE TABLE IF NOT EXISTS @table (@definition);
+teradata,"IF OBJECT_ID('@table', 'U') IS NOT NULL DROP TABLE @table;",DROP TABLE IF EXISTS @table;
+teradata,"IF OBJECT_ID('tempdb..#@table', 'U') IS NOT NULL DROP TABLE @table;",DROP TABLE IF EXISTS @table;
+--teradata. workaround to process IF EXIST queries. END
 teradata,.dbo.,.
 teradata,CREATE TABLE #@table (@definition),CREATE MULTISET VOLATILE TABLE @table (@definition) ON COMMIT PRESERVE ROWS;
 teradata,CREATE CLUSTERED INDEX @index_name ON @table (@variable);,CREATE INDEX @index_name (@variable) ON @table;
