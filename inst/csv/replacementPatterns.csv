@@ -899,7 +899,7 @@ teradata,SELECT TOP @([0-9]+)rows @a;,SELECT @a SAMPLE @rows;
 teradata,(SELECT TOP @([0-9]+)rows @a),(SELECT @a SAMPLE @rows)
 --teradata,hacks,begin
 teradata,"ISNUMERIC(abs(@a))","CASE WHEN tryCast(CAST(@a AS CHAR(1000)) AS BIGINT) is not null THEN 1 ELSE 0 END"
-teradata,"ISNUMERIC(@a)","CASE WHEN TryCast(@a) THEN 1 ELSE 0 END"
+teradata,"ISNUMERIC(@a)","CASE WHEN tryCast(CAST(@a AS CHAR(1000)) AS BIGINT) is not null THEN 1 ELSE 0 END"
 teradata,!=, <>
 teradata,!=, <>
 teradata,.DOMAIN, ."DOMAIN"
