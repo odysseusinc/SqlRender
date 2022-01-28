@@ -30,8 +30,7 @@ test_that("translateSqlFile", {
   sql2 <- readSql(fileName2)
   file.remove(fileName1)
   file.remove(fileName2)
-  expect_equal(sql2,
-               "SELECT (observation_period_start_date + 1*INTERVAL'1 day') FROM observation_period")
+  expect_equal(sql2, "SELECT (observation_period_start_date + 1*INTERVAL'1 day') FROM observation_period")
 })
 
 test_that("snakeCaseToCamelCase", {
@@ -48,7 +47,7 @@ test_that("camelCaseToSnakeCase ", {
   string1 <- "cdmDatabaseSchema"
   string2 <- camelCaseToSnakeCase(string1)
   expect_equal(string2, "cdm_database_schema")
-
+  
   string1 <- "exposureId1"
   string2 <- camelCaseToSnakeCase(string1)
   expect_equal(string2, "exposure_id_1")
@@ -58,7 +57,7 @@ test_that("camelCaseToTitleCase ", {
   string1 <- "cdmDatabaseSchema"
   string2 <- camelCaseToTitleCase(string1)
   expect_equal(string2, "Cdm Database Schema")
-
+  
   string1 <- "exposureId1"
   string2 <- camelCaseToTitleCase(string1)
   expect_equal(string2, "Exposure Id 1")

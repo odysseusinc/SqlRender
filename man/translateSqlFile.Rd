@@ -8,7 +8,6 @@ translateSqlFile(
   sourceFile,
   targetFile,
   targetDialect,
-  tempEmulationSchema = getOption("sqlRenderTempEmulationSchema"),
   oracleTempSchema = NULL
 )
 }
@@ -17,14 +16,10 @@ translateSqlFile(
 
 \item{targetFile}{The target SQL file}
 
-\item{targetDialect}{The target dialect. Currently "oracle", "postgresql", "pdw", "impala",
-"sqlite", "netezza", "bigquery", and "redshift" are supported.}
+\item{targetDialect}{The target dialect. Currently 'oracle', 'postgresql', and 'redshift' are
+supported}
 
-\item{tempEmulationSchema}{Some database platforms like Oracle and Impala do not truly support
-temp tables. To emulate temp tables, provide a schema with write
-privileges where temp tables can be created.}
-
-\item{oracleTempSchema}{DEPRECATED: use \code{tempEmulationSchema} instead.}
+\item{oracleTempSchema}{A schema that can be used to create temp tables in when using Oracle.}
 }
 \description{
 This function takes SQL and translates it to a different dialect.
