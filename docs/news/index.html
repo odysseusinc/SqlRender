@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SqlRender</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.8.3</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,13 +99,19 @@
   </ul>
 </li>
 <li>
+  <a href="https://data.ohdsi.org/SqlDeveloper/">SqlDeveloper</a>
+</li>
+<li>
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="https://ohdsi.github.io/Hades"><img src='https://ohdsi.github.io/Hades/images/hadesMini.png' width=80 height=17 style='vertical-align: top;'></a>
+</li>
+<li>
   <a href="https://github.com/OHDSI/SqlRender/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -126,9 +132,107 @@
       <small>Source: <a href='https://github.com/OHDSI/SqlRender/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sqlrender-183" class="section level1">
+<h1 class="page-header" data-toc-text="1.8.3">
+<a href="#sqlrender-183" class="anchor"></a>SqlRender 1.8.3<small> Unreleased </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li><p>Added rules for translating implicit string concatenation to BigQuery.</p></li>
+<li><p>Added <code><a href="../reference/getTempTablePrefix.html">getTempTablePrefix()</a></code> function.</p></li>
+</ol>
+</div>
+    <div id="sqlrender-182" class="section level1">
+<h1 class="page-header" data-toc-text="1.8.2">
+<a href="#sqlrender-182" class="anchor"></a>SqlRender 1.8.2<small> Unreleased </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li>Adding <code><a href="../reference/listSupportedDialects.html">listSupportedDialects()</a></code> function.</li>
+</ol>
+<p>Bugfixes:</p>
+<ol>
+<li>Fix <code>DATEFROMPARTS</code> and <code>DATETIMEFROMPARTS</code> translation for newer SQLite versions by first converting to <code>INT</code> before converting to <code>TEXT</code>.</li>
+</ol>
+</div>
+    <div id="sqlrender-181" class="section level1">
+<h1 class="page-header" data-toc-text="1.8.1">
+<a href="#sqlrender-181" class="anchor"></a>SqlRender 1.8.1<small> 2021-09-15 </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li>Provide informative error message when Java is outdated.</li>
+</ol>
+</div>
+    <div id="sqlrender-180" class="section level1">
+<h1 class="page-header" data-toc-text="1.8.0">
+<a href="#sqlrender-180" class="anchor"></a>SqlRender 1.8.0<small> 2021-09-02 </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li><p>Added Apache Spark dialect (“spark”).</p></li>
+<li><p>Adding automated check whether correct Java Jar file is loaded, throws warning if not.</p></li>
+<li><p>Adding translation of <code>CEILING()</code> for SQLite.</p></li>
+</ol>
+<p>Bugfixes:</p>
+<ol>
+<li><p>Fixing setting of global <code>tempEmulationSchema</code> option.</p></li>
+<li><p>Workaround for <code>SUBSTR()</code> function bug in newer versions of SQLite (by explicitly casting string to type <code>STRING</code>).</p></li>
+</ol>
+</div>
+    <div id="sqlrender-170" class="section level1">
+<h1 class="page-header" data-toc-text="1.7.0">
+<a href="#sqlrender-170" class="anchor"></a>SqlRender 1.7.0<small> 2021-03-02 </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li><p>Deprecating <code>oracleTempSchema</code> argument in various functions in favor of <code>tempEmulationSchema</code> schema, which can also be set globally using the <code>sqlRenderTempEmulationSchema</code> option.</p></li>
+<li><p>Adding translation of DATEDIFF(YEAR, …) and DATEDIFF(MONTH, …) to all dialects.</p></li>
+<li><p>Updated <code><a href="../reference/createRWrapperForSql.html">createRWrapperForSql()</a></code> to latest SqlRender standards.</p></li>
+</ol>
+<p>Bugfixes:</p>
+<ol>
+<li><p>Fixed translation of CTE without FROM or UNION in BigQuery.</p></li>
+<li><p>Fixed translation of CONVERT(DATE…) in SQLite.</p></li>
+<li><p>Fixed translation of DATEDIFF with literals in SQLite.</p></li>
+</ol>
+</div>
+    <div id="sqlrender-168" class="section level1">
+<h1 class="page-header" data-toc-text="1.6.8">
+<a href="#sqlrender-168" class="anchor"></a>SqlRender 1.6.8<small> 2020-07-31 </small>
+</h1>
+<p>Bugfixes:</p>
+<ol>
+<li>Fixing error when SQL is not a native character vector (e.g. when it has been created using glue).</li>
+</ol>
+</div>
+    <div id="sqlrender-167" class="section level1">
+<h1 class="page-header" data-toc-text="1.6.7">
+<a href="#sqlrender-167" class="anchor"></a>SqlRender 1.6.7<small> Unreleased </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li>Throw a more informative error message when <code><a href="../reference/loadRenderTranslateSql.html">loadRenderTranslateSql()</a></code> cannot find the SQL file in the specified package.</li>
+</ol>
+<p>Bugfixes:</p>
+<ol>
+<li><p>On SQLite, DATEADD and CONVERT functions now cast to REAL (used to represent DATE / DATETIME).</p></li>
+<li><p>On SQLite, DATEADD function now works when amount to add is not a verbatim number.</p></li>
+</ol>
+</div>
+    <div id="sqlrender-166" class="section level1">
+<h1 class="page-header" data-toc-text="1.6.6">
+<a href="#sqlrender-166" class="anchor"></a>SqlRender 1.6.6<small> 2020-05-19 </small>
+</h1>
+<p>Changes:</p>
+<ol>
+<li><p>Adding rules for modulus operator for BigQuery.</p></li>
+<li><p>Deleting UPDATE STATISTICS statement for BigQuery.</p></li>
+</ol>
+</div>
     <div id="sqlrender-165" class="section level1">
 <h1 class="page-header" data-toc-text="1.6.5">
-<a href="#sqlrender-165" class="anchor"></a>SqlRender 1.6.5<small> Unreleased </small>
+<a href="#sqlrender-165" class="anchor"></a>SqlRender 1.6.5<small> 2020-04-01 </small>
 </h1>
 <p>Bugfixes:</p>
 <ol>
@@ -363,7 +467,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
