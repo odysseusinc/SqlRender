@@ -185,7 +185,7 @@
 <a href="#translation-to-other-sql-dialects" class="anchor"></a>Translation to other SQL dialects</h1>
 <p>SQL for one platform (e.g. Microsoft SQL Server) will not always execute on other platforms (e.g. Oracle). The <code><a href="../reference/translate.html">translate()</a></code> function can be used to translate between different dialects, but there are some limitations.</p>
 <p>A first limitation is that <strong>the starting dialect has to be SQL Server</strong>. The reason for this is that this dialect is in general the most specific. For example, the number of days between two dates in SQL Server has to be computed using the DATEDIFF function: <code>DATEDIFF(dd,a,b)</code>. In other languages one can simply subtract the two dates: <code>b-a</code>. Since you’d need to know a and b are dates, it is not possible to go from other languages to SQL Server, only the other way around.</p>
-<p>A second limitation is that currently only these dialects are supported as targets: <strong>Oracle</strong>, <strong>PostgreSQL</strong>, <strong>Microsoft PDW (Parallel Data Warehouse)</strong>, <strong>Impala</strong>, <strong>Netezza</strong>, <strong>Google BigQuery</strong>, <strong>Amazon Redhift</strong>, <strong>Apache Spark</strong> and <strong>SQLite</strong>.</p>
+<p>A second limitation is that currently only these dialects are supported as targets: <strong>Oracle</strong>, <strong>PostgreSQL</strong>, <strong>Microsoft PDW (Parallel Data Warehouse)</strong>, <strong>Impala</strong>, <strong>Netezza</strong>, <strong>Google BigQuery</strong>, <strong>Amazon Redhift</strong>, <strong>Snowflake</strong>, <strong>Apache Spark</strong> and <strong>SQLite</strong>.</p>
 <p>A third limitation is that only a limited set of translation rules have currently been implemented, although adding them to the <a href="https://github.com/OHDSI/SqlRender/blob/master/inst/csv/replacementPatterns.csv">list</a> should not be hard.</p>
 <p>A last limitation is that not all functions supported in one dialect have an equivalent in other dialects.</p>
 <p>Below an example:</p>
@@ -202,6 +202,7 @@
 <li>“impala”</li>
 <li>“netezza”</li>
 <li>“bigquery”</li>
+<li>“snowflake”</li>
 <li>“spark”</li>
 <li>“sqlite”</li>
 <li>“sqlite extended”</li>

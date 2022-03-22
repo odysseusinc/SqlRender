@@ -7,6 +7,8 @@ Changes:
 
 2. Supporting `DROP TABLE IF EXISTS` translation across all dialects.
 
+3. Added Snowflake support
+
 
 SqlRender 1.8.3
 ===============

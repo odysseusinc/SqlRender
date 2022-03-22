@@ -75,7 +75,7 @@ render <- function(sql = "", warnOnMissingParameters = TRUE, ...) {
   if (warnOnMissingParameters) {
     messages <- rJava::J("org.ohdsi.sql.SqlRender")$check(as.character(sql), rJava::.jarray(names(parameters)), rJava::.jarray(as.character(parameters)))
     for (message in messages) {
-      warn(message)
+      warning(message)
     }
   }
   translatedSql <- rJava::J("org.ohdsi.sql.SqlRender")$renderSql(as.character(sql), rJava::.jarray(names(parameters)), rJava::.jarray(as.character(parameters)))
@@ -122,7 +122,7 @@ renderSql <- function(sql = "", warnOnMissingParameters = TRUE, ...) {
 #'
 #' @param sql                   The SQL to be translated
 #' @param targetDialect         The target dialect. Currently "oracle", "postgresql", "pdw", "impala",
-#'                              "sqlite", "sqlite extended", "netezza", "bigquery", "spark", and "redshift" are supported. 
+#'                              "sqlite", "sqlite extended", "netezza", "bigquery", "snowflake", "spark", and "redshift" are supported. 
 #'                              Use \code{\link{listSupportedDialects}} to get the list of supported dialects.
 #' @param oracleTempSchema      DEPRECATED: use \code{tempEmulationSchema} instead.
 #' @param tempEmulationSchema   Some database platforms like Oracle and Impala do not truly support
@@ -144,7 +144,7 @@ translate <- function(sql = "",
     return("")
   }
   if (!is.null(oracleTempSchema) && oracleTempSchema != "") {
-    warn("The 'oracleTempSchema' argument is deprecated. Use 'tempEmulationSchema' instead.",
+    warning("The 'oracleTempSchema' argument is deprecated. Use 'tempEmulationSchema' instead.",
          .frequency = "regularly",
          .frequency_id = "oracleTempSchema")
     tempEmulationSchema <- oracleTempSchema
@@ -157,7 +157,7 @@ translate <- function(sql = "",
   }
   messages <- rJava::J("org.ohdsi.sql.SqlTranslate")$check(as.character(sql), as.character(targetDialect))
   for (message in messages) {
-    warn(message)
+    warning(message)
   }
   translatedSql <- rJava::J("org.ohdsi.sql.SqlTranslate")$translateSqlWithPath(as.character(sql), as.character(targetDialect), rJava::.jnull(), tempEmulationSchema, as.character(pathToReplacementPatterns))
   return(translatedSql)
@@ -172,7 +172,7 @@ translate <- function(sql = "",
 #'
 #' @param sql                The SQL to be translated
 #' @param targetDialect      The target dialect. Currently "oracle", "postgresql", "pdw", "impala",
-#'                           "netezza", "bigquery", "spark", and "redshift" are supported
+#'                           "netezza", "bigquery", "snowflake", "spark", and "redshift" are supported
 #' @param oracleTempSchema   A schema that can be used to create temp tables in when using Oracle or
 #'                           Impala.
 #'
@@ -201,7 +201,7 @@ translateSql <- function(sql = "", targetDialect, oracleTempSchema = NULL) {
 #'
 #' @param sql                   The SQL to be translated
 #' @param targetDialect         The target dialect. Currently "oracle", "postgresql", "pdw", "impala",
-#'                              "sqlite", "sqlite extended", "netezza", "bigquery", "spark", and "redshift" are supported.
+#'                              "sqlite", "sqlite extended", "netezza", "bigquery", "snowflake", "spark", and "redshift" are supported.
 #' @param oracleTempSchema      DEPRECATED: use \code{tempEmulationSchema} instead.
 #' @param tempEmulationSchema   Some database platforms like Oracle and Impala do not truly support
 #'                              temp tables. To emulate temp tables, provide a schema with write
@@ -221,7 +221,7 @@ translateSingleStatement <- function(sql = "",
     return("")
   }
   if (!is.null(oracleTempSchema) && oracleTempSchema != "") {
-    warn("The 'oracleTempSchema' argument is deprecated. Use 'tempEmulationSchema' instead.",
+    warning("The 'oracleTempSchema' argument is deprecated. Use 'tempEmulationSchema' instead.",
          .frequency = "regularly",
          .frequency_id = "oracleTempSchema")
     tempEmulationSchema <- oracleTempSchema
@@ -234,7 +234,7 @@ translateSingleStatement <- function(sql = "",
   }
   messages <- rJava::J("org.ohdsi.sql.SqlTranslate")$check(as.character(sql), as.character(targetDialect))
   for (message in messages) {
-    warn(message)
+    warning(message)
   }
   translatedSql <- rJava::J("org.ohdsi.sql.SqlTranslate")$translateSingleStatementSqlWithPath(as.character(sql), as.character(targetDialect), rJava::.jnull(), tempEmulationSchema, as.character(pathToReplacementPatterns))
   return(translatedSql)

@@ -6,12 +6,12 @@
 \alias{SqlRender-package}
 \title{SqlRender: Rendering Parameterized SQL and Translation to Dialects}
 \description{
-A rendering tool for parameterized SQL that also translates into different SQL dialects. These dialects include 'Microsoft Sql Server', 'Oracle', 'PostgreSql', 'Amazon RedShift', 'Apache Impala', 'IBM Netezza', 'Google BigQuery', 'Microsoft PDW', 'Apache Spark', and 'SQLite'.
+A rendering tool for parameterized SQL that also translates into different SQL dialects. These dialects include 'Microsoft Sql Server', 'Oracle', 'PostgreSql', 'Amazon RedShift', 'Apache Impala', 'IBM Netezza', 'Google BigQuery', 'Microsoft PDW', 'Snowflake', 'Apache Spark', and 'SQLite'.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://ohdsi.github.io/SqlRender}
+  \item \url{https://ohdsi.github.io/SqlRender/}
   \item \url{https://github.com/OHDSI/SqlRender}
   \item Report bugs at \url{https://github.com/OHDSI/SqlRender/issues}
 }
