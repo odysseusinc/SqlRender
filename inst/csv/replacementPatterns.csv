@@ -1031,3 +1031,8 @@ sqlite extended,UPDATE STATISTICS @a;,ANALYZE @a;
 sqlite extended,TRUNCATE TABLE @a;,DELETE FROM @a;
 sqlite extended,"CONCAT(@a, @b, @c)","CONCAT(@a, CONCAT(@b, @c))"
 sqlite extended,"CONCAT(@a, @b)","@a || @b"
+synapse,VARCHAR(MAX),VARCHAR(8000)
+synapse,CREATE INDEX @index_name ON #@table (@variable);,-- synapse does not support non-clustered index on temp tables.
+synapse,"CONSTRAINT @a DEFAULT GETDATE()",""
+synapse,"DEFAULT GETDATE()",""
+synapse,CREATE INDEX @index_name ON @table (@variable) WHERE @b;,CREATE INDEX @index_name ON @table (@variable);
