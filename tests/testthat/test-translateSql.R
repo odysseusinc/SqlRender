@@ -401,6 +401,24 @@ test_that("translate sql server -> PDW CREATE TABLE with CONSTRAINT DEFAULT", {
   )
 })
 
+test_that("translate sql server -> synapse CREATE TABLE with CONSTRAINT DEFAULT", {
+  sql <- translate("CREATE TABLE a(c1 DATETIME CONSTRAINT a_c1_def DEFAULT GETDATE());",
+    targetDialect = "synapse"
+  )
+  expect_equal_ignore_spaces(
+    sql,
+    "CREATE TABLE a(c1 DATETIME);"
+  )
+})
+
+test_that("translate sql server -> synapse CREATE TABLE with CONSTRAINT DEFAULT", {
+  sql <- translate("CREATE TABLE a(c1 DATETIME DEFAULT GETDATE());", targetDialect = "synapse")
+  expect_equal_ignore_spaces(
+    sql,
+    "CREATE TABLE a(c1 DATETIME);"
+  )
+})
+
 test_that("translate sql server -> Postgres create table if not exists", {
   sql <- translate("IF OBJECT_ID('cohort', 'U') IS NULL\n CREATE TABLE cohort\n(cohort_definition_id INT);",
     targetDialect = "postgresql"
@@ -420,6 +438,11 @@ test_that("translate sql server -> Redshift create table if not exists", {
 
 test_that("translate sql server -> PDW CREATE INDEX with WHERE", {
   sql <- translate("CREATE INDEX idx_a ON a(c1, c2) WHERE c3 <> '';", targetDialect = "pdw")
+  expect_equal_ignore_spaces(sql, "CREATE INDEX idx_a ON a(c1, c2);")
+})
+
+test_that("translate sql server -> synapse CREATE INDEX with WHERE", {
+  sql <- translate("CREATE INDEX idx_a ON a(c1, c2) WHERE c3 <> '';", targetDialect = "synapse")
   expect_equal_ignore_spaces(sql, "CREATE INDEX idx_a ON a(c1, c2);")
 })
 
